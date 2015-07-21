@@ -470,6 +470,9 @@ Zotero.BetterBibTeX.init = ->
   setInterval((-> Zotero.BetterBibTeX.cache.flush(); Zotero.BetterBibTeX.keymanager.flush()), cfi * 1000 * 60)
 
   Zotero.Translate.Export::Sandbox.BetterBibTeX = {
+    import: (url, scope) ->
+      throw new Error("Import scope must be an empty object") unless scope && Object.keys(scope).length == 0
+      Components.utils.import(url, scope)
     keymanager: {
       months:         @keymanager.months
       journalAbbrev:  @keymanager.journalAbbrev.bind(@keymanager)
