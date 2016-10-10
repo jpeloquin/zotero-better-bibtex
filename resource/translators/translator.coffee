@@ -388,7 +388,7 @@ Translator.complete = ->
     Zotero.write("@preamble{ " + preamble.join(" \n # ") + " }\n")
 
   if noLanguage
-    Zotero.write("% #{noLanguage} references have no language set and have been assumed to be English -- TitleCasing has been applied\n")
+    Zotero.write("% #{noLanguage} #{if noLanguage == 1 then 'reference has' else 'references have'} no language set and #{if noLanguage == 1 then 'has' else 'have'} been assumed to be English -- TitleCasing has been applied\n")
 
 Translator.exportGroups = ->
   @debug('exportGroups:', @collections)
