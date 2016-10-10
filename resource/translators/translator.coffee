@@ -242,7 +242,7 @@ Translator.initialize = ->
   return if @initialized
   @initialized = true
 
-  @preamble = {DeclarePrefChars: ''}
+  @referenceInfo = []
   @citekeys = Object.create(null)
   @attachmentCounter = 0
   @rawLaTag = '#LaTeX'
@@ -358,7 +358,7 @@ Translator.nextItem = ->
         Translator.debug('nextItem: cached')
         @citekeys[item.itemID] = cached.citekey
         Zotero.write(cached.bibtex)
-        @preamble.DeclarePrefChars += cached.data.DeclarePrefChars if cached.data.DeclarePrefChars
+        @referenceInfo.push(cached.data || {})
         continue
 
     Zotero.BetterBibTeX.keymanager.extract(item, 'nextItem')
@@ -372,12 +372,23 @@ Translator.nextItem = ->
 Translator.complete = ->
   @exportGroups()
 
+  prefchars = ''
+  noopsort = false
+  noLanguage = 0
+  for info in @referenceInfo
+    prefchars += info.DeclarePrefChars if info.DeclarePrefChars
+    noopsort ||= info.noopsort
+    noLanguage += 1 if info.noLanguage
+
   preamble = []
-  preamble.push('\\DeclarePrefChars{' + @unique_chars(@preamble.DeclarePrefChars) + '}') if @preamble.DeclarePrefChars
-  preamble.push('\\newcommand{\\noopsort}[1]{}') if @preamble.noopsort
+  preamble.push('\\DeclarePrefChars{' + @unique_chars(prefchars) + '}') if prefchars
+  preamble.push('\\newcommand{\\noopsort}[1]{}') if noopsort
   if preamble.length > 0
     preamble = ('"' + cmd + ' "' for cmd in preamble)
     Zotero.write("@preamble{ " + preamble.join(" \n # ") + " }\n")
+
+  #if noLanguage
+  #  Zotero.write("% #{noLanguage} references have no language set and have been assumed to be English -- TitleCasing has been applied\n")
 
 Translator.exportGroups = ->
   @debug('exportGroups:', @collections)

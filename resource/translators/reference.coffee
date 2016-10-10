@@ -31,8 +31,10 @@ class Reference
     @has = Object.create(null)
     @raw = (Translator.rawLaTag in @item.tags)
     @data = {DeclarePrefChars: ''}
+    Translator.referenceInfo.push(@data)
 
     if !@item.language
+      @data.noLanguage = true
       @english = true
       Translator.debug('detecting language: defaulting to english')
     else
@@ -286,7 +288,7 @@ class Reference
 
     if Translator.BetterBibTeX && Translator.bibtexParticleNoOp && (name['non-dropping-particle'] || name['dropping-particle'])
       family = '{\\noopsort{' + @enc_latex({value: name.family.toLowerCase()}) + '}}' + family
-      Translator.preamble.noopsort = true
+      @data.noopsort = true
 
     name.given = @enc_latex({value: name.given}) if name.given
     name.suffix = @enc_latex({value: name.suffix}) if name.suffix
@@ -612,8 +614,7 @@ class Reference
 
     Zotero.BetterBibTeX.cache.store(@item.itemID, Translator, @item.__citekey__, ref, @data) if Translator.caching
 
-    Translator.preamble.DeclarePrefChars += @data.DeclarePrefChars if @data.DeclarePrefChars
-    Translator.debug('item.complete:', {data: @data, preamble: Translator.preamble})
+    Translator.debug('item.complete:', {data: @data})
 
   toVerbatim: (text) ->
     if Translator.BetterBibTeX
