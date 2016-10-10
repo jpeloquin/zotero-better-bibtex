@@ -387,8 +387,8 @@ Translator.complete = ->
     preamble = ('"' + cmd + ' "' for cmd in preamble)
     Zotero.write("@preamble{ " + preamble.join(" \n # ") + " }\n")
 
-  #if noLanguage
-  #  Zotero.write("% #{noLanguage} references have no language set and have been assumed to be English -- TitleCasing has been applied\n")
+  if noLanguage
+    Zotero.write("% #{noLanguage} references have no language set and have been assumed to be English -- TitleCasing has been applied\n")
 
 Translator.exportGroups = ->
   @debug('exportGroups:', @collections)
