@@ -87,13 +87,10 @@ Zotero.BetterBibTeX = new class
     switch
       when version = @activeAddons['zotero@chnm.gmu.edu']
         switch
-          when Services.vc.compare(version.replace(/(\.SOURCE|beta[0-9]+)$/, ''), '4.0.28') < 0
-            return "Better BibTeX has been disabled because it found Zotero #{version}, but requires 4.0.28 or later."
+          when Services.vc.compare(version.replace(/(\.SOURCE|-?beta.+)$/, ''), '5.0.0') < 0
+            return "Zotero #{version} found. Better BibTeX has been disabled because it is not compatible with Zotero versions earlier than 5.0."
 
-          when Services.vc.compare(version.replace(/(\.SOURCE|beta[0-9]+)$/, ''), '5.0.0') >= 0
-            return "Zotero #{version} found. Better BibTeX has been disabled because is not compatible with Zotero version 5.0 or later."
-
-          when version.match(/(\.SOURCE|beta[0-9]+)$/)
+          when version.match(/(\.SOURCE|-?beta.+)$/)
             @flash(
               "You are on a custom/beta Zotero build (#{version}). " +
               'Feel free to submit error reports for Better BibTeX when things go wrong, I will do my best to address them, but the target will always be the latest official version of Zotero'
@@ -101,16 +98,16 @@ Zotero.BetterBibTeX = new class
 
       when version = @activeAddons['juris-m@juris-m.github.io']?.replace('m', '.')
         switch
-          when Services.vc.compare(version.replace(/(\.SOURCE|beta[0-9]+)$/, ''), '4.0.29.12.95') < 0
+          when Services.vc.compare(version.replace(/(\.SOURCE|-?beta.+)$/, ''), '4.0.29.12.95') < 0
             return "Better BibTeX has been disabled because it found Juris-M #{version}, but requires 4.0.29.12m95 or later."
 
-          when Services.vc.compare(version.replace(/(\.SOURCE|beta[0-9]+)$/, ''), '4.0.29.12.98') < 0
+          when Services.vc.compare(version.replace(/(\.SOURCE|-?beta.+)$/, ''), '4.0.29.12.98') < 0
             @flash("Juris-M #{version} has known incompatibilities with Better BibTeX -- for full compatibility, install 4.0.29.12m98 or later (m98beta will do)", 20)
 
-          when Services.vc.compare(version.replace(/(\.SOURCE|beta[0-9]+)$/, ''), '5.0.0') >= 0
-            return "Juris-M #{version} found. Better BibTeX has been disabled because is not compatible with Juris-M version 5.0 or later."
+          when Services.vc.compare(version.replace(/(\.SOURCE|-?beta.+)$/, ''), '5.0.0') >= 0
+            return "Juris-M #{version} found. Better BibTeX has been disabled because it is not compatible with Juris-M version 5.0 or later."
 
-          when version.match(/(\.SOURCE|beta[0-9]+)$/)
+          when version.match(/(\.SOURCE|-?beta.+)$/)
             @flash(
               "You are on a custom Juris-M build (#{version}). " +
               'Feel free to submit error reports for Better BibTeX when things go wrong, I will do my best to address them, but the target will always be the latest official version of Juris-M'

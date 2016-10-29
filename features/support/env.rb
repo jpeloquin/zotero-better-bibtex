@@ -25,7 +25,7 @@ class JSONRPCClient
       begin
         result = JSON.parse(body)
       rescue
-        throw "Unexpected #{body.inspect} when requesting #{method}(#{params.join(',')})"
+        throw "Unexpected '#{body.inspect}' when requesting #{method}(#{params.join(',')})"
       end
     end
     if error = result["error"]

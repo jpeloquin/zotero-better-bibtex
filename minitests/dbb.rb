@@ -53,7 +53,7 @@ class JSONRPCClient
   end
 end
 
-dbb = JSONRPCClient.new('http://localhost:23119/debug-bridge')
+dbb = JSONRPCClient.new('http://127.0.0.1:23119/debug-bridge')
 dbb.bootstrap('Zotero.BetterBibTeX')
-bbt = JSONRPCClient.new('http://localhost:23119/debug-bridge/better-bibtex')
+bbt = JSONRPCClient.new('http://127.0.0.1:23119/debug-bridge/better-bibtex')
 puts bbt.setPreference('translators.better-bibtex.tests', 'all')
