@@ -13,20 +13,20 @@ Zotero.BetterBibTeX.DebugBridge.methods.init = ->
 
   return true
 
-Zotero.BetterBibTeX.DebugBridge.methods.reset = ->
+Zotero.BetterBibTeX.DebugBridge.methods.reset = Zotero.Promise.coroutine(->
   Zotero.BetterBibTeX.DebugBridge.methods.init()
 
   for key in Zotero.BetterBibTeX.Pref.branch.getChildList('')
     Zotero.BetterBibTeX.Pref.clear(key)
 
-  Zotero.Items.erase((item.id for item in Zotero.Items.getAll() || []))
+  Zotero.Items.erase((item.id for item in (yield Zotero.Items.getAll()) || []))
 
   ### notes don't get erased in bulk?! ###
-  for item in Zotero.Items.getAll() || []
-    item.erase()
+  # for item in (yield Zotero.Items.getAll()) || []
+  #  item.erase()
 
   Zotero.Collections.erase((coll.id for coll in Zotero.getCollections()))
-  Zotero.Items.emptyTrash()
+  yield Zotero.Items.emptyTrash()
 
   Zotero.BetterBibTeX.cache.reset('debugbridge.reset')
   Zotero.BetterBibTeX.serialized.reset('debugbridge.reset')
@@ -34,10 +34,11 @@ Zotero.BetterBibTeX.DebugBridge.methods.reset = ->
   Zotero.BetterBibTeX.keymanager.reset()
   Zotero.BetterBibTeX.JournalAbbrev.reset()
 
-  items = Zotero.Items.getAll() || []
+  items = (yield Zotero.Items.getAll()) || []
   return true if items.length == 0
   err = JSON.stringify((item.toArray() for item in items))
   throw "reset failed -- #{items.length} items left in library -- #{err}"
+)
 
 Zotero.BetterBibTeX.DebugBridge.methods.import = (filename) ->
   file = Components.classes['@mozilla.org/file/local;1'].createInstance(Components.interfaces.nsILocalFile)
@@ -45,14 +46,14 @@ Zotero.BetterBibTeX.DebugBridge.methods.import = (filename) ->
   Zotero_File_Interface.importFile(file)
   return true
 
-Zotero.BetterBibTeX.DebugBridge.methods.librarySize = ->
+Zotero.BetterBibTeX.DebugBridge.methods.librarySize = Zotero.Promise.coroutine(->
   items = {
     notes: 0
     attachments: 0
     references: 0
   }
 
-  for item in Zotero.Items.getAll() || []
+  for item in (yield Zotero.Items.getAll()) || []
     switch item.itemTypeID
       when 1  then  items.notes++
       when 14 then  items.attachments++
@@ -60,6 +61,7 @@ Zotero.BetterBibTeX.DebugBridge.methods.librarySize = ->
 
   Zotero.BetterBibTeX.debug('librarySize:', items)
   return items
+)
 
 Zotero.BetterBibTeX.DebugBridge.methods.exportToString = (translator, displayOptions) ->
   if translator.substring(0,3) == 'id:'
