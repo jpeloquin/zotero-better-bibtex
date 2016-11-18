@@ -4,6 +4,8 @@ set -e
 
 cd "$(dirname "$0")"
 
+. .env
+
 git pull --all > rebuild.log 2>&1
 git merge master --no-edit >> rebuild.log 2>&1
 DATE=`date +%Y-%m-%d`
