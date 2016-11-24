@@ -562,6 +562,22 @@ rule '.json' => '.yml' do |t|
   }
 end
 
+def webpack(code, target)
+  puts "\nwebpack #{target}"
+  prefix, code = code.split("\n", 2)
+  code, prefix = prefix, code unless code
+  prefix = prefix ? prefix + "\n" : ''
+  Tempfile.create(['webpack', '.js'], File.dirname(target)) do |caller|
+    Tempfile.create(['webpack', '.js'], File.dirname(target)) do |output|
+      open(caller.path, 'w'){|f| f.puts code }
+      sh "#{NODEBIN}/webpack #{caller.path.shellescape} #{output.path.shellescape}"
+      open(target, 'w') {|f|
+        f.write(prefix)
+        f.write(open(output.path).read)
+      }
+    end
+  end
+end
 def browserify(code, target)
   puts "\nbrowserify #{target}"
   prefix, code = code.split("\n", 2)
@@ -637,6 +653,10 @@ end
 
 file 'resource/translators/yaml.js' => 'Rakefile' do |t|
   browserify("var YAML;\nYAML = require('js-yaml');", t.name)
+end
+
+file 'resource/translators/bibtex-parser.js' => 'Rakefile' do |t|
+  webpack("Translator.BibTeXParser = require('biblatex-csl-converter').BibLatexParser;", t.name)
 end
 
 file 'resource/translators/marked.js' => 'Rakefile' do |t|
