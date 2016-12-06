@@ -6,7 +6,9 @@ cd "$(dirname "$0")"
 
 . .env
 
-git pull --all > rebuild.log 2>&1
+git checkout master > rebuild.log 2>&1
+git pull >> rebuild.log 2>&1
+git checkout nightly
 git merge master --no-edit >> rebuild.log 2>&1
 DATE=`date +%Y-%m-%d`
 git commit --allow-empty -m "$DATE: check for new Zotero/Juris-M versions" >> rebuild.log 2>&1
