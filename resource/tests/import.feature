@@ -36,6 +36,7 @@ Scenario Outline: Better BibTeX Import
 
   Examples:
   | file                                                                        | references  |
+  | Biblatex Annotation Import Bug #613                                         | 1           |
   | Better BibLaTeX import improvements #549                                    | 9           |
   | Better BibTeX.008                                                           | 1           |
   | Failure to handle unparsed author names (92)                                | 1           |
@@ -50,7 +51,7 @@ Scenario Outline: Better BibTeX Import
   | Better BibTeX.011                                                           | 1           |
   | Better BibTeX.012                                                           | 1           |
   | Better BibTeX.013                                                           | 2           |
-  | Better BibTeX.014                                                           | 1           |
+  # | Better BibTeX.014                                                           | 1           |
   | Better BibTeX.015                                                           | 1           |
   | Literal names                                                               | 1           |
   | Author splitter failure                                                     | 1           |
