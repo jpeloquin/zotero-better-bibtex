@@ -458,7 +458,7 @@ ZoteroItem::import = () ->
     @item.proceedingsTitle = @item.publicationTitle
     delete @item.publicationTitle
 
-  @addToExtra("bibtex: #{@item.itemID}")
+  @addToExtra(Zotero.getHiddenPref('better-bibtex.extraFieldCitekeyLabel') + ": #{@item.itemID}")
 
   keys = Object.keys(@biblatexdata)
   if keys.length > 0

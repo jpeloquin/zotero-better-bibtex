@@ -46,6 +46,7 @@
         <preference name="extensions.zotero.translators.better-bibtex.citekeyFormat"            id="pref-better-bibtex-citekeyFormat"           type="string"/>
         <preference name="extensions.zotero.translators.better-bibtex.citekeyFold"              id="pref-better-bibtex-citekeyFold"             type="bool"/>
         <preference name="extensions.zotero.translators.better-bibtex.debug"                    id="pref-better-bibtex-debug"                   type="bool"/>
+        <preference name="extensions.zotero.translators.better-bibtex.extraFieldCitekeyLabel"              id="pref-better-bibtex-extraFieldCitekeyLabel"             type="string"/>
         <preference name="extensions.zotero.translators.better-bibtex.keyConflictPolicy"        id="pref-better-bibtex-keyConflictPolicy"       type="string"/>
         <preference name="extensions.zotero.translators.better-bibtex.langID"                   id="pref-better-bibtex-langID"                  type="string"/>
         <!-- Switches between `babel` and `polyglossia`, except I haven't gotten around to polyglossia yet. -->
@@ -136,7 +137,7 @@
         </tabs>
 
         <tabpanels id="better-bibtex-prefs-tabpanels">
-          <tabpanel id="better-bibtex-prefs-citation-keys" orient="vertical">
+          <tabpanel id="better-bibtex-prefs-citation-keys" orient="vertical" height="510" style="overflow:auto">
             <groupbox>
               <caption label="&zotero.better-bibtex.prefs.citekey.citekeys;"/>
               <hbox>
@@ -162,6 +163,20 @@
                 shown) will display the citation key instead of the extra field.
               -->
             </groupbox>
+
+            <groupbox>
+              <caption label="&zotero.better-bibtex.prefs.citekey.extraFieldUse;"/>
+              <hbox>
+                <label>&zotero.better-bibtex.prefs.citekey.extraField.label;</label>
+                <textbox size="40" id="id-better-bibtex-preferences-extraFieldCitekeyLabel" preference="pref-better-bibtex-extraFieldCitekeyLabel"
+                  oninput="BetterBibTeXPref.update();"
+                  onkeypress="setTimeout(function() { BetterBibTeXPref.update() }, 1);"/>
+                <!--
+                  Set the label used to identify a fixed citation key in an item's Extra field.  The default is `bibtex`, meaning that `bibtex: mycitekey` in the extra field sets that item's citation key to `mycitekey`.
+                -->
+              </hbox>
+            </groupbox>
+
             <groupbox>
               <caption label="&zotero.better-bibtex.prefs.citekey.quickCopy;"/>
               <grid flex="1">

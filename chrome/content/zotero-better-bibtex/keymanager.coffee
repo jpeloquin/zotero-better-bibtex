@@ -12,7 +12,8 @@ Zotero.BetterBibTeX.keymanager = new class
   ###
   months: [ 'jan', 'feb', 'mar', 'apr', 'may', 'jun', 'jul', 'aug', 'sep', 'oct', 'nov', 'dec' ]
 
-  embeddedKeyRE: /\bbibtex: *([^\s\r\n]+)/
+  pattern = '\\b' + Zotero.BetterBibTeX.Pref.get('extraFieldCitekeyLabel') + ': *([^\\s\\r\\n]+)'
+  embeddedKeyRE: new RegExp(pattern)
   andersJohanssonKeyRE: /\bbiblatexcitekey\[([^\]]+)\]/
 
   sort: (a, b) ->
@@ -161,7 +162,7 @@ Zotero.BetterBibTeX.keymanager = new class
       return
 
     extra = extra.extra
-    extra += " \nbibtex: #{citekey}" if citekey
+    extra += " \n" + Zotero.BetterBibTeX.Pref.get('extraFieldCitekeyLabel') + ": #{citekey}" if citekey
     extra = extra.trim()
     item.setField('extra', extra)
     item.save({skipDateModifiedUpdate: true})
@@ -207,7 +208,7 @@ Zotero.BetterBibTeX.keymanager = new class
         if typeof extra != 'string'
           Zotero.BetterBibTeX.debug('keymanager.scan: item with non-string extra', {id: item.id, title: item.getField('title'), extra, type: typeof extra})
           continue
-        continue unless extra.match(/(bibtex:)|(biblatexcitekey[\[{])/)
+        continue unless extra.match(new RegExp('(' + Zotero.BetterBibTeX.Pref.get('extraFieldCitekeyLabel') + ':)|(biblatexcitekey[\\[{])'))
         items.push(item)
 
     return [] if items.length == 0
