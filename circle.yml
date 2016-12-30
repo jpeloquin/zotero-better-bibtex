@@ -40,8 +40,8 @@ general:
   branches:
     ignore:
       - gh-pages
-deployment:
-  all:
-    branch: "/.*/"
-    commands:
-    - bundle exec rake publish
+# deployment:
+#  all:
+#    branch: "/.*/"
+#    commands:
+#    - bundle exec rake publish
